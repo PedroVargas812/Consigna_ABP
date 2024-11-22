@@ -291,11 +291,9 @@ void menuPrincipal() {
     int respuesta;
     char nombres[5][50];
     int tiempos[5], recursos[5], cantidades[5];
-    
-    tiempo_disponible = validarInt("Ingrese el tiempo disponible(horas): ");
-    recursos_disponibles = validarInt("Ingrese la cantidad total de recursos economicos disponibles en dolares (aproximar a un numero entero): ");
-do {
-    printf("¿Desea ingresar productos ahora? (1-Si/2-No): ");
+   printf("<<Electronic industries>>\n"); 
+   do {
+    printf("¿Desea ingresar productos en este momento? (1-Si/2-No): ");
     scanf("%d", &respuesta);
     
     if (respuesta < 1 || respuesta > 2) {
@@ -307,6 +305,9 @@ if (respuesta == 1) {
     int cantidad = validarInt1("¿Cuantos productos desea ingresar? ");
     ingresarProductos(nombres, tiempos, recursos, cantidades, &total_productos, cantidad);
 }
+    tiempo_disponible = validarInt("Ingrese el tiempo disponible(horas): ");
+    recursos_disponibles = validarInt("Ingrese la cantidad total de recursos economicos disponibles en dolares (aproximar a un numero entero): ");
+
     do {
         printf("\n--- MENU PRINCIPAL ---\n");
         printf("1. Ingresar multiples productos\n");
