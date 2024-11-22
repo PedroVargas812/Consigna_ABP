@@ -1,7 +1,7 @@
 // Declaración de funciones
 void limpiarBuffer();
-float validarFloat(const char* mensaje);
 int validarInt(const char* mensaje);
+int validarInt1(const char* mensaje);
 void menuPrincipal();
 void ingresarProductos(char nombres[5][50], int tiempos[], int recursos[], int cantidades[], int* total_productos, int cantidad);
 void editarProducto(char nombres[5][50], int tiempos[], int recursos[], int cantidades[], int total_productos);
