@@ -278,7 +278,7 @@ void mostrarProductos(char nombres[5][50], int tiempos[5], int recursos[5], int 
 
     printf("\nLista de productos:\n");
     for (int i = 0; i < total_productos; i++) {
-        printf("%d. %s - Tiempo: %d hora/lote, Recursos: %d/lotes, Cantidad: %d\n",
+        printf("%d. %s - Tiempo: %d hora/lote, Recursos: %d/dolares por lotes, Cantidad: %d\n",
                i + 1, nombres[i], tiempos[i], recursos[i], cantidades[i]);
     }
     printf("\n");
