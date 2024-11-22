@@ -5,8 +5,6 @@
 void limpiarBuffer() {
     while (getchar() != '\n');
 }
-
-
 int validarInt(const char* mensaje) {
     int valor;
     int valido;
@@ -82,37 +80,99 @@ void editarProducto(char nombres[5][50], int tiempos[5], int recursos[5], int ca
 
     for (int i = 0; i < total_productos; i++) {
         if (strcmp(nombres[i], nombre) == 0) {
-            printf("Producto encontrado. Ingrese los nuevos datos:\n");
-            printf("Nombre actual: %s\n", nombres[i]);
-            printf("Nuevo nombre: ");
-            scanf(" %[^\n]", nombres[i]);
-            
-            printf("Nuevo tiempo de fabricacion por lote de produccion (horas): ");
-            while (scanf("%d", &tiempos[i]) != 1 || tiempos[i] < 0) {
-                printf("Error: Ingrese un numero entero no negativo.\n");
-                limpiarBuffer();
-            }
-            
-            printf("Nuevos recursos economicos en dolares por lote de produccion: ");
-            while (scanf("%d", &recursos[i]) != 1 || recursos[i] < 0) {
-                printf("Error: Ingrese un numero entero no negativo.\n");
-                limpiarBuffer();
-            }
-            
-            printf("Nueva cantidad de lotes de demanda: ");
-            while (scanf("%d", &cantidades[i]) != 1 || cantidades[i] < 0) {
-                printf("Error: Ingrese un numero entero no negativo.\n");
-                limpiarBuffer();
-            }
-            
-            printf("<<Producto editado exitosamente.>>\n");
-            return; // Volver al menú principal
+            printf("Producto encontrado.\n");
+            int opcion = 0;
+            do {
+                printf("\nSeleccione lo que desea editar:\n");
+                printf("1. Nombre\n");
+                printf("2. Tiempo de fabricacion por lote\n");
+                printf("3. Recursos economicos por lote\n");
+                printf("4. Cantidad de lotes de demanda\n");
+                printf("5. Editar todo\n");
+                printf("0. Volver al menu principal\n");
+                printf("Opcion: ");
+                scanf("%d", &opcion);
+
+                switch (opcion) {
+                    case 1:
+                        printf("Nombre actual: %s\n", nombres[i]);
+                        printf("Nuevo nombre: ");
+                        scanf(" %[^\n]", nombres[i]);
+                        printf("<<Nombre actualizado exitosamente.>>\n");
+                        break;
+
+                    case 2:
+                        printf("Tiempo actual de fabricacion: %d horas\n", tiempos[i]);
+                        printf("Nuevo tiempo de fabricacion (horas): ");
+                        while (scanf("%d", &tiempos[i]) != 1 || tiempos[i] < 0) {
+                            printf("Error: Ingrese un numero entero no negativo.\n");
+                            limpiarBuffer();
+                        }
+                        printf("<<Tiempo actualizado exitosamente.>>\n");
+                        break;
+
+                    case 3:
+                        printf("Recursos economicos actuales: $%d\n", recursos[i]);
+                        printf("Nuevos recursos economicos (dolares): ");
+                        while (scanf("%d", &recursos[i]) != 1 || recursos[i] < 0) {
+                            printf("Error: Ingrese un numero entero no negativo.\n");
+                            limpiarBuffer();
+                        }
+                        printf("<<Recursos economicos actualizados exitosamente.>>\n");
+                        break;
+
+                    case 4:
+                        printf("Cantidad actual de lotes de demanda: %d\n", cantidades[i]);
+                        printf("Nueva cantidad de lotes de demanda: ");
+                        while (scanf("%d", &cantidades[i]) != 1 || cantidades[i] < 0) {
+                            printf("Error: Ingrese un numero entero no negativo.\n");
+                            limpiarBuffer();
+                        }
+                        printf("<<Cantidad de lotes actualizada exitosamente.>>\n");
+                        break;
+
+                    case 5:
+                        printf("Editar todos los datos del producto.\n");
+                        printf("Nombre actual: %s\n", nombres[i]);
+                        printf("Nuevo nombre: ");
+                        scanf(" %[^\n]", nombres[i]);
+
+                        printf("Nuevo tiempo de fabricacion por lote de produccion (horas): ");
+                        while (scanf("%d", &tiempos[i]) != 1 || tiempos[i] < 0) {
+                            printf("Error: Ingrese un número entero no negativo.\n");
+                            limpiarBuffer();
+                        }
+
+                        printf("Nuevos recursos economicos en dolares por lote de produccion: ");
+                        while (scanf("%d", &recursos[i]) != 1 || recursos[i] < 0) {
+                            printf("Error: Ingrese un numero entero no negativo.\n");
+                            limpiarBuffer();
+                        }
+
+                        printf("Nueva cantidad de lotes de demanda: ");
+                        while (scanf("%d", &cantidades[i]) != 1 || cantidades[i] < 0) {
+                            printf("Error: Ingrese un numero entero no negativo.\n");
+                            limpiarBuffer();
+                        }
+                        printf("<<Todos los datos del producto fueron actualizados exitosamente.>>\n");
+                        break;
+
+                    case 0:
+                        printf("Volviendo al menu principal...\n");
+                        break;
+
+                    default:
+                        printf("Opcion invalida. Por favor, seleccione una opcion valida.\n");
+                }
+            } while (opcion != 0);
+            return;
         }
     }
-    
+
     // Si no se encuentra el producto
-    printf("Producto no encontrado. Volviendo al menu principal...\n");
+    printf("Producto no encontrado. Volviendo al menú principal...\n");
 }
+
 void eliminarProducto(char nombres[5][50], int tiempos[5], int recursos[5], int cantidades[5], int *total_productos) {
     char nombre[50];
     printf("Ingrese el nombre del producto a eliminar: ");
@@ -147,36 +207,69 @@ void calcularTiempoYRecursos(char nombres[5][50], int tiempos[5], int recursos[5
 }
 
 void verificarViabilidad(char nombres[5][50], int tiempos[5], int recursos[5], int cantidades[5], int total_productos, float tiempo_disponible, int recursos_disponibles) {
-    float tiempo_total = 0;
-    int recursos_totales = 0;
-
-    // Calcular el tiempo total y los recursos totales
-    for (int i = 0; i < total_productos; i++) {
-        tiempo_total += tiempos[i] * cantidades[i];
-        recursos_totales += recursos[i] * cantidades[i];
+    if (total_productos == 0) {
+        printf("No hay productos registrados para verificar.\n");
+        return;
     }
 
-    if (tiempo_total <= tiempo_disponible && recursos_totales <= recursos_disponibles) {
-        printf("\nEs viable cumplir con la demanda.\n");
-        printf("Tiempo disponible: %.2f horas, Tiempo requerido: %.2f horas\n", tiempo_disponible, tiempo_total);
-        printf("Recursos disponibles: %d dolares, Recursos requeridos: %d dolares\n", recursos_disponibles, recursos_totales);
+    int opcion;
+    printf("Seleccione la opción para verificar la viabilidad:\n");
+    printf("1. Verificar viabilidad en general\n");
+    printf("2. Verificar viabilidad por producto\n");
+    printf("Opción: ");
+    scanf("%d", &opcion);
 
-        printf("\nProductos que cumplen con la viabilidad:\n");
+    if (opcion == 1) {
+        // Verificación en general
+        float tiempo_total = 0;
+        int recursos_totales = 0;
+
         for (int i = 0; i < total_productos; i++) {
-            printf("- %s: %d horas por lote x %d lotes = %d horas, %d dolares por lote x %d lotes = %d dolares\n",
-                   nombres[i], tiempos[i], cantidades[i], tiempos[i] * cantidades[i],
-                   recursos[i], cantidades[i], recursos[i] * cantidades[i]);
+            tiempo_total += tiempos[i] * cantidades[i];
+            recursos_totales += recursos[i] * cantidades[i];
+        }
+
+        if (tiempo_total <= tiempo_disponible && recursos_totales <= recursos_disponibles) {
+            printf("\nEs viable cumplir con la demanda en general.\n");
+            printf("Tiempo disponible: %.2f horas, Tiempo requerido: %.2f horas\n", tiempo_disponible, tiempo_total);
+            printf("Recursos disponibles: %d dólares, Recursos requeridos: %d dólares\n", recursos_disponibles, recursos_totales);
+        } else {
+            printf("\nNo es viable cumplir con la demanda en general.\n");
+            if (tiempo_total > tiempo_disponible) {
+                printf("Falta tiempo: %.2f horas\n", tiempo_total - tiempo_disponible);
+            }
+            if (recursos_totales > recursos_disponibles) {
+                printf("Faltan recursos económicos: %d dólares\n", recursos_totales - recursos_disponibles);
+            }
+        }
+    } else if (opcion == 2) {
+        // Verificación por producto
+        printf("\nViabilidad por producto:\n");
+        for (int i = 0; i < total_productos; i++) {
+            float tiempo_requerido = tiempos[i] * cantidades[i];
+            int recursos_requeridos = recursos[i] * cantidades[i];
+
+            printf("\nProducto: %s\n", nombres[i]);
+            printf("Tiempo requerido: %.2f horas, Tiempo disponible: %.2f horas\n", tiempo_requerido, tiempo_disponible);
+            printf("Recursos requeridos: %d dólares, Recursos disponibles: %d dólares\n", recursos_requeridos, recursos_disponibles);
+
+            if (tiempo_requerido <= tiempo_disponible && recursos_requeridos <= recursos_disponibles) {
+                printf(">> Es viable fabricar este producto.\n");
+            } else {
+                printf(">> No es viable fabricar este producto.\n");
+                if (tiempo_requerido > tiempo_disponible) {
+                    printf("   Falta tiempo: %.2f horas\n", tiempo_requerido - tiempo_disponible);
+                }
+                if (recursos_requeridos > recursos_disponibles) {
+                    printf("   Faltan recursos económicos: %d dólares\n", recursos_requeridos - recursos_disponibles);
+                }
+            }
         }
     } else {
-        printf("\nNo es viable cumplir con la demanda.\n");
-        if (tiempo_total > tiempo_disponible) {
-            printf("Falta tiempo: %.2f horas\n", tiempo_total - tiempo_disponible);
-        }
-        if (recursos_totales > recursos_disponibles) {
-            printf("Faltan recursos economicos: %d dolares\n", recursos_totales - recursos_disponibles);
-        }
+        printf("Opción inválida. Volviendo al menú principal...\n");
     }
 }
+
 void mostrarProductos(char nombres[5][50], int tiempos[5], int recursos[5], int cantidades[5], int total_productos) {
     if (total_productos == 0) {
         printf("No hay productos registrados.\n");
