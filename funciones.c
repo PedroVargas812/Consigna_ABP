@@ -32,7 +32,7 @@ int validarInt1(const char* mensaje) {
         valido = scanf("%d", &valor);
 
         if (valido != 1 || valor < 0 || valor >=6 ) {
-            printf("Error: Ingrese un numero entero no negativo o mayor a 5 .\n");
+            printf("Error: Ingrese un numero entero positivo o menor a 5 .\n");
             limpiarBuffer();
             valido = 0;
         } else if (getchar() != '\n') {
@@ -46,7 +46,7 @@ int validarInt1(const char* mensaje) {
 void ingresarProductos(char nombres[5][50], int tiempos[5], int recursos[5], int cantidades[5], int *total_productos, int cantidad) {
     for (int i = 0; i < cantidad; i++) { 
         if (*total_productos >= 5) { 
-            printf("No se pueden agregar más productos. Límite alcanzado.\n");
+            printf("No se pueden agregar mas productos. Limite alcanzado.\n");
             return; 
         }
 
@@ -58,7 +58,7 @@ void ingresarProductos(char nombres[5][50], int tiempos[5], int recursos[5], int
         printf("Ingrese el tiempo de fabricacion por lote de produccion (horas): "); 
         scanf("%d", &tiempos[*total_productos]); 
 
-        printf("Ingrese los recursos economicos en dolares necesarios por lote de produccion: "); 
+        printf("Ingrese el valor economico necesario por lote de produccion: "); 
         scanf("%d", &recursos[*total_productos]); 
 
         printf("Ingrese la cantidad de lotes de demandada: "); 
@@ -86,7 +86,7 @@ void editarProducto(char nombres[5][50], int tiempos[5], int recursos[5], int ca
                 printf("\nSeleccione lo que desea editar:\n");
                 printf("1. Nombre\n");
                 printf("2. Tiempo de fabricacion por lote\n");
-                printf("3. Recursos economicos por lote\n");
+                printf("3. Valor economico por lote\n");
                 printf("4. Cantidad de lotes de demanda\n");
                 printf("5. Editar todo\n");
                 printf("0. Volver al menu principal\n");
@@ -118,7 +118,7 @@ void editarProducto(char nombres[5][50], int tiempos[5], int recursos[5], int ca
                             printf("Error: Ingrese un numero entero no negativo.\n");
                             limpiarBuffer();
                         }
-                        printf("<<Recursos economicos actualizados exitosamente.>>\n");
+                        printf("<<Valores economicos actualizados exitosamente.>>\n");
                         break;
 
                     case 4:
@@ -139,7 +139,7 @@ void editarProducto(char nombres[5][50], int tiempos[5], int recursos[5], int ca
 
                         printf("Nuevo tiempo de fabricacion por lote de produccion (horas): ");
                         while (scanf("%d", &tiempos[i]) != 1 || tiempos[i] < 0) {
-                            printf("Error: Ingrese un número entero no negativo.\n");
+                            printf("Error: Ingrese un numero entero no negativo.\n");
                             limpiarBuffer();
                         }
 
@@ -213,7 +213,7 @@ void verificarViabilidad(char nombres[5][50], int tiempos[5], int recursos[5], i
     }
 
     int opcion;
-    printf("Seleccione la opción para verificar la viabilidad:\n");
+    printf("Seleccione la opcion para verificar la viabilidad:\n");
     printf("1. Verificar viabilidad en general\n");
     printf("2. Verificar viabilidad por producto\n");
     printf("Opción: ");
@@ -239,7 +239,7 @@ void verificarViabilidad(char nombres[5][50], int tiempos[5], int recursos[5], i
                 printf("Falta tiempo: %.2f horas\n", tiempo_total - tiempo_disponible);
             }
             if (recursos_totales > recursos_disponibles) {
-                printf("Faltan recursos económicos: %d dólares\n", recursos_totales - recursos_disponibles);
+                printf("Faltan recursos economicos: %d dólares\n", recursos_totales - recursos_disponibles);
             }
         }
     } else if (opcion == 2) {
@@ -251,7 +251,7 @@ void verificarViabilidad(char nombres[5][50], int tiempos[5], int recursos[5], i
 
             printf("\nProducto: %s\n", nombres[i]);
             printf("Tiempo requerido: %.2f horas, Tiempo disponible: %.2f horas\n", tiempo_requerido, tiempo_disponible);
-            printf("Recursos requeridos: %d dólares, Recursos disponibles: %d dólares\n", recursos_requeridos, recursos_disponibles);
+            printf("Recursos requeridos: %d dolares, Recursos disponibles: %d dolares\n", recursos_requeridos, recursos_disponibles);
 
             if (tiempo_requerido <= tiempo_disponible && recursos_requeridos <= recursos_disponibles) {
                 printf(">> Es viable fabricar este producto.\n");
@@ -261,12 +261,12 @@ void verificarViabilidad(char nombres[5][50], int tiempos[5], int recursos[5], i
                     printf("   Falta tiempo: %.2f horas\n", tiempo_requerido - tiempo_disponible);
                 }
                 if (recursos_requeridos > recursos_disponibles) {
-                    printf("   Faltan recursos económicos: %d dólares\n", recursos_requeridos - recursos_disponibles);
+                    printf("   Faltan recursos economicos: %d dolares\n", recursos_requeridos - recursos_disponibles);
                 }
             }
         }
     } else {
-        printf("Opción inválida. Volviendo al menú principal...\n");
+        printf("Opcion invalida. Volviendo al menu principal...\n");
     }
 }
 
@@ -292,6 +292,10 @@ void menuPrincipal() {
     char nombres[5][50];
     int tiempos[5], recursos[5], cantidades[5];
    printf("<<Electronic industries>>\n"); 
+
+    tiempo_disponible = validarInt("Ingrese el tiempo disponible para elabroar el pedido(horas): ");
+    recursos_disponibles = validarInt("Ingrese la cantidad total del capital disponible en dolares (aproximar a un numero entero): ");
+    printf("<------------------------------>\n");
    do {
     printf("¿Desea ingresar productos en este momento? (1-Si/2-No): ");
     scanf("%d", &respuesta);
@@ -305,9 +309,6 @@ if (respuesta == 1) {
     int cantidad = validarInt1("¿Cuantos productos desea ingresar? ");
     ingresarProductos(nombres, tiempos, recursos, cantidades, &total_productos, cantidad);
 }
-    tiempo_disponible = validarInt("Ingrese el tiempo disponible(horas): ");
-    recursos_disponibles = validarInt("Ingrese la cantidad total de recursos economicos disponibles en dolares (aproximar a un numero entero): ");
-
     do {
         printf("\n--- MENU PRINCIPAL ---\n");
         printf("1. Ingresar multiples productos\n");
